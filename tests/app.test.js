@@ -28,9 +28,7 @@ describe('Suite de Pruebas de Calidad de Software', () => {
 
   });
 
-  // ==========================
-  // PRUEBAS DE INTEGRACIÓN
-  // ==========================
+ 
   describe('Pruebas de Integración - API Endpoints', () => {
 
     test('GET /health - Debe responder con status 200 y Content-Type JSON', async () => {
@@ -58,6 +56,13 @@ describe('Suite de Pruebas de Calidad de Software', () => {
       const response = await request(app).get('/no-existe');
       expect(response.statusCode).toBe(404);
     });
+    test('GET /health - Debe retornar status "OK" en el body', async () => {
+  const response = await request(app).get('/health');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body).toHaveProperty('status');
+  expect(response.body.status).toBe('OK');
+});
 
   });
 

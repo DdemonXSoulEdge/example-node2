@@ -84,3 +84,8 @@ function onListening() {
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
