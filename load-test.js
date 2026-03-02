@@ -13,7 +13,7 @@ export const options = {
   },
 };
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://fast-api-dev.onrender.com';
 
 export default function () {
   let usersRes = http.get(`${BASE_URL}/users`);
