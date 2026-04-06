@@ -1,0 +1,36 @@
+name: Blue-Green Switch
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '¿A qué ambiente cambiar?'
+        required: true
+        default: 'green'
+        type: choice
+        options:
+          - green
+          - blue
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conmutar tráfico en Nginx
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.NGINX_HOST }}
+          username: ${{ secrets.NGINX_USER }}
+          key: ${{ secrets.NGINX_SSH_KEY }}
+          script: |
+            if [ "${{ github.event.inputs.environment }}" = "green" ]; then
+              sudo /usr/local/bin/switch-green.sh
+            else
+              sudo /usr/local/bin/switch-blue.sh
+            fi
+
+      - name: Verificar header de respuesta
+        run: |
+          sleep 3
+          curl -sI http://${{ secrets.NGINX_HOST }} | grep X-Deployment-Color
