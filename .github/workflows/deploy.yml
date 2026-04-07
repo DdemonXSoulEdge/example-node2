@@ -38,7 +38,7 @@ jobs:
 
   deploy:
     needs: build-and-push
-    runs-on: self-hosted        # ← Corre en el bastion
+    runs-on: self-hosted
     steps:
       - name: Deploy a docker-palomillo
         run: |
@@ -46,7 +46,9 @@ jobs:
             -i $HOME/.ssh/github_actions \
             palomillo_flores@10.0.1.4 \
             "echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u DdemonXSoulEdge --password-stdin && \
-             docker stop app-palomillo || true && \
-             docker rm app-palomillo || true && \
+             docker stop app-palomillo 2>/dev/null; \
+             docker rm app-palomillo 2>/dev/null; \
+             docker pull ghcr.io/ddemonxsouledge/example-node2:main && \
+             docker run -d --name app-palomillo -p 8080:3000 --restart always ghcr.io/ddemonxsouledge/example-node2:main"
              docker pull ghcr.io/ddemonxsouledge/example-node2:main && \
              docker run -d --name app-palomillo -p 8080:3000 --restart always ghcr.io/ddemonxsouledge/example-node2:main"
