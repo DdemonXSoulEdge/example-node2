@@ -1,5 +1,4 @@
 name: Blue-Green Switch
-
 on:
   workflow_dispatch:
     inputs:
@@ -15,22 +14,19 @@ on:
 jobs:
   switch:
     runs-on: self-hosted
-
     steps:
       - name: Conmutar tráfico en Nginx
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.NGINX_HOST }}
-          username: ${{ secrets.NGINX_USER }}
-          key: ${{ secrets.NGINX_SSH_KEY }}
-          script: |
-            if [ "${{ github.event.inputs.environment }}" = "green" ]; then
+        run: |
+          ssh -o StrictHostKeyChecking=no \
+            -i $HOME/.ssh/github_actions \
+            ${{ secrets.NGINX_USER }}@10.0.1.3 \
+            "if [ '${{ github.event.inputs.environment }}' = 'green' ]; then
               sudo /usr/local/bin/switch-green.sh
             else
               sudo /usr/local/bin/switch-blue.sh
-            fi
+            fi"
 
       - name: Verificar header de respuesta
         run: |
           sleep 3
-          curl -sI http://${{ secrets.NGINX_HOST }} | grep X-Deployment-Color
+          curl -sI http://10.0.1.3 | grep X-Deployment-Color
