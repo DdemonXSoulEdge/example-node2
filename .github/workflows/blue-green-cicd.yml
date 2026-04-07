@@ -26,7 +26,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:main
+          tags: ghcr.io/ddemonxsouledge/example-node2:main
 
   deploy:
     needs: build-and-push
@@ -35,11 +35,9 @@ jobs:
       - name: Leer estado actual y calcular objetivo
         id: state
         run: |
-          # Leer el color activo actual
           source ~/current_deploy.env
           echo "Color activo: $CURRENT_COLOR"
 
-          # Calcular el color opuesto
           if [ "$CURRENT_COLOR" = "blue" ]; then
             TARGET_COLOR="green"
             TARGET_PORT="3000"
@@ -50,7 +48,6 @@ jobs:
 
           echo "Color objetivo: $TARGET_COLOR en puerto $TARGET_PORT"
 
-          # Exportar para los siguientes pasos
           echo "TARGET_COLOR=$TARGET_COLOR" >> $GITHUB_ENV
           echo "TARGET_PORT=$TARGET_PORT" >> $GITHUB_ENV
           echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
@@ -68,7 +65,6 @@ jobs:
 
       - name: Aplicar configuracion Nginx con envsubst
         run: |
-          # Estas variables vienen del pipeline y se inyectan en el servidor
           export APP_TARGET_IP="10.0.1.4"
           export APP_TARGET_PORT="${{ env.TARGET_PORT }}"
           export DEPLOYMENT_COLOR="${{ env.TARGET_COLOR }}"
@@ -98,7 +94,6 @@ jobs:
 
       - name: Actualizar archivo de estado
         run: |
-          # Solo actualiza si la verificacion fue exitosa
           echo "CURRENT_COLOR=${{ env.TARGET_COLOR }}" > ~/current_deploy.env
           echo "Estado actualizado: ${{ env.TARGET_COLOR }} ahora es productivo"
           cat ~/current_deploy.env
