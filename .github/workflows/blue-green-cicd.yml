@@ -56,7 +56,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no \
             -i $HOME/.ssh/github_actions \
-            palomillo_flores@10.0.1.4 \
+            palomillo_flores@10.138.0.2 \
             "echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u DdemonXSoulEdge --password-stdin && \
              docker pull ghcr.io/ddemonxsouledge/example-node2:main && \
              docker stop app-node app-palomillo 2>/dev/null || true && \
@@ -68,8 +68,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no \
             -i $HOME/.ssh/github_actions \
-            palomillo_flores@10.0.1.3 \
-            "export APP_TARGET_IP=10.0.1.4 && \
+            palomillo_flores@10.138.0.4 \
+            "export APP_TARGET_IP=10.138.0.2 && \
              export APP_TARGET_PORT=${{ env.TARGET_PORT }} && \
              export DEPLOYMENT_COLOR=${{ env.TARGET_COLOR }} && \
              envsubst '\${APP_TARGET_IP} \${APP_TARGET_PORT} \${DEPLOYMENT_COLOR}' \
@@ -79,7 +79,7 @@ jobs:
       - name: Verificar header del ambiente nuevo
         run: |
           sleep 3
-          HEADER=$(curl -sI http://10.0.1.3 | grep -i X-Deployment-Color)
+          HEADER=$(curl -sI http://10.138.0.4 | grep -i X-Deployment-Color)
           echo "Header recibido: $HEADER"
           if echo "$HEADER" | grep -qi "${{ env.TARGET_COLOR }}"; then
             echo "Verificacion exitosa - ${{ env.TARGET_COLOR }} esta activo"
