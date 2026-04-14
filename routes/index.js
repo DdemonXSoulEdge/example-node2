@@ -1,10 +1,8 @@
-
 var express = require("express");
 var router = express.Router();
 
-router.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", uptime: process.uptime() });
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'VERSION BLUE - Deploy Automatico' });
 });
 
 module.exports = router;
-
