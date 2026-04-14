@@ -77,8 +77,10 @@ jobs:
           sleep 3
           HEADER=$(curl -sI http://10.138.0.4 | grep -i X-Deployment-Color)
           echo "Header recibido: $HEADER"
-          if echo "$HEADER" | grep -qi "${{ env.TARGET_COLOR }}"; then
-            echo "Verificacion exitosa - ${{ env.TARGET_COLOR }} esta activo"
+          TARGET="${{ env.TARGET_COLOR }}"
+          echo "Buscando: $TARGET"
+          if echo "$HEADER" | grep -qi "$TARGET"; then
+            echo "Verificacion exitosa - $TARGET esta activo"
           else
             echo "Error - el header no coincide"
             exit 1
