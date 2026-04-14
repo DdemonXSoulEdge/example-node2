@@ -56,8 +56,8 @@ jobs:
             palomillo_flores@10.138.0.2 \
             "echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u DdemonXSoulEdge --password-stdin && \
              docker pull ghcr.io/ddemonxsouledge/example-node2:main && \
-             docker stop app-node app-palomillo app-blue app-green 2>/dev/null || true && \
-             docker rm app-${{ env.TARGET_COLOR }} 2>/dev/null || true && \
+             docker stop app-node app-palomillo app-blue app-green test-local 2>/dev/null || true && \
+             docker rm app-${{ env.TARGET_COLOR }} test-local 2>/dev/null || true && \
              docker run -d --name app-${{ env.TARGET_COLOR }} -p ${{ env.TARGET_PORT }}:3000 --restart always ghcr.io/ddemonxsouledge/example-node2:main"
 
       - name: Aplicar configuracion Nginx con envsubst
