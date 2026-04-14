@@ -37,17 +37,14 @@ jobs:
         run: |
           source ~/current_deploy.env
           echo "Color activo: $CURRENT_COLOR"
-
           if [ "$CURRENT_COLOR" = "blue" ]; then
             TARGET_COLOR="green"
-            TARGET_PORT="3000"
+            TARGET_PORT="3002"
           else
             TARGET_COLOR="blue"
             TARGET_PORT="8080"
           fi
-
           echo "Color objetivo: $TARGET_COLOR en puerto $TARGET_PORT"
-
           echo "TARGET_COLOR=$TARGET_COLOR" >> $GITHUB_ENV
           echo "TARGET_PORT=$TARGET_PORT" >> $GITHUB_ENV
           echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
