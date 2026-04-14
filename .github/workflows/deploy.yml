@@ -43,7 +43,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no \
             -i $HOME/.ssh/github_actions \
-            palomillo_flores@10.0.1.4 << 'ENDSSH'
+            palomillo_flores@10.138.0.2 << 'ENDSSH'
             echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u DdemonXSoulEdge --password-stdin
             docker stop app-palomillo 2>/dev/null
             docker rm app-palomillo 2>/dev/null
